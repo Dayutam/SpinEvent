@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gacha Hadiah Free Fire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-image: url('029a93f148c3835eaf2774880f89a83b.jpg'); /* Background Free Fire */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 25px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-top: 50px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.9);
+            max-width: 400px;
+            width: 90%;
+        }
+        h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+        }
+        .gacha-button, .claim-button {
+            background: linear-gradient(to right, #ffcc00, #ff6600);
+            color: black;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            margin-top: 15px;
+            width: 100%;
+        }
+        .gacha-button:hover, .claim-button:hover {
+            background: linear-gradient(to right, #ff9900, #ff3300);
+            transform: scale(1.05);
+        }
+        .slot-machine {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            display: inline-block;
+            width: 100%;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: yellow;
+        }
+        .reward-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            margin-top: 15px;
+            display: none;
+            border-radius: 10px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                margin-top: 30px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            .slot-machine {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🎁 Spin Hadiah Gratis Free Fire 🎁</h2>
+        <p>Masukkan ID Free Fire Anda untuk mencoba keberuntungan!</p>
+        <input type="text" id="playerID" placeholder="Masukkan ID Free Fire">
+        <br>
+        <button class="gacha-button" id="gachaButton" onclick="startGacha()">SPIN!</button>
+        
+        <div class="slot-machine" id="slotMachine"> ???</div>
+        <img id="rewardImage" class="reward-image" src="" alt="Hadiah">
+        
+        <p class="message" id="message"></p>
+        <button class="claim-button" id="claimButton" onclick="claimReward()" style="display: none;">✅ CLAIM</button>
+    </div>
+
+    <audio id="gachaSound" src="https://www.fesliyanstudios.com/play-mp3/4382"></audio>
+    <audio id="ringSound" src="https://www.fesliyanstudios.com/play-mp3/2765"></audio>
+    <audio id="winSound" src="https://www.fesliyanstudios.com/play-mp3/4383"></audio>
+
+    <script>
+        let hadiahList = [
+            { name: " Bundle Cobra Rage", img: "97f0a329aedf2f94637fa0661ab6c7d8.jpg" },
+            { name: "💎 500 Diamond", img: "diamond.jpg" },
+            { name: "Skin M1887 One Punch Man", img: "40715f82da3133fc8eb9f3510800d5ee.jpg" },
+            { name: "Bundle Dino Hijau", img: "1f66027a96b94d2f2d46d5e8b0423837.jpg" },
+            { name: "Emote Booyah!", img: "263a3fa2503a13bbd5ef35cbeb157164.jpg" },
+            { name: "Skin AK Blue Flame Draco", img: "94b5d247805dad252ee80a8053e39196.jpg" },
+            { name: "Pet Dreki", img: "642c976f20b2e043cb8f6a2ca427fcd0.jpg" },
+            { name: "Bundle DJ Alok", img: "486e212eb3900ee6e043fb5b3d9c34b1.jpg" },
+            { name: "M1887 reaper", img: "18022eb0985c558f066498ff2fae8912.jpg" },
+            { name: "💎 1000 Diamond", img: "diamond.jpg" }
+        ];
+
+        function startGacha() {
+            let playerID = document.getElementById("playerID").value.trim();
+            let messageElement = document.getElementById("message");
+            let slotMachine = document.getElementById("slotMachine");
+            let button = document.getElementById("gachaButton");
+            let claimButton = document.getElementById("claimButton");
+            let rewardImage = document.getElementById("rewardImage");
+            let gachaSound = document.getElementById("gachaSound");
+            let ringSound = document.getElementById("ringSound");
+            let winSound = document.getElementById("winSound");
+
+            if (playerID === "") {
+                messageElement.innerHTML = "⚠️ Masukkan ID Free Fire!";
+                messageElement.style.color = "red";
+                return;
+            }
+
+            if (localStorage.getItem(playerID)) {
+                messageElement.innerHTML = "❌ Kamu sudah melakukan Spin sekali!";
+                messageElement.style.color = "red";
+                return;
+            }
+
+            button.innerHTML = "SPIN...";
+            button.disabled = true;
+            slotMachine.innerHTML = "";
+            messageElement.innerHTML = "";
+            rewardImage.style.display = "none";
+            claimButton.style.display = "none";
+
+            gachaSound.play();
+            let ringInterval = setInterval(() => ringSound.play(), 500);
+
+            let rollCount = 10;
+            let interval = setInterval(() => {
+                let randomItem = hadiahList[Math.floor(Math.random() * hadiahList.length)];
+                slotMachine.innerHTML = `🎰 ${randomItem.name}`;
+                rollCount--;
+                if (rollCount <= 0) {
+                    clearInterval(interval);
+                    clearInterval(ringInterval);
+                    
+                    let hadiahAkhir = hadiahList[Math.floor(Math.random() * hadiahList.length)];
+                    slotMachine.innerHTML = `🎁 ${hadiahAkhir.name}`;
+                    messageElement.innerHTML = `🎉 Selamat! ID ${playerID} mendapatkan: <strong>${hadiahAkhir.name}</strong>!`;
+                    
+                    rewardImage.src = hadiahAkhir.img;
+                    rewardImage.style.display = "block";
+                    claimButton.style.display = "block";
+
+                    localStorage.setItem(playerID, "done");
+
+                    winSound.play();
+                    button.disabled = true;
+                }
+            }, 200);
+        }
+
+        function claimReward() {
+            window.location.href = "https://play.google.com/store/search?q=free+fire&c=apps&hl=id"; 
+        }
+    </script>
+
+</body>
+</html>
